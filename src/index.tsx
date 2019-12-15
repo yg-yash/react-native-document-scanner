@@ -52,6 +52,9 @@ interface PdfScannerProps {
   noGrayScale?: boolean;
   manualOnly?: boolean;
   style?: ViewStyle;
+  useBase64?: boolean;
+  saveInAppDocument?: boolean;
+  captureMultiple?: boolean;
 }
 
 class PdfScanner extends React.Component<PdfScannerProps> {
@@ -72,7 +75,7 @@ class PdfScanner extends React.Component<PdfScannerProps> {
     return this.props.quality
   }
 
-  componentWillMount () {
+  componentDidMount () {
     if (Platform.OS === 'android') {
       const { onPictureTaken, onProcessing } = this.props
       if (onPictureTaken) DeviceEventEmitter.addListener('onPictureTaken', onPictureTaken)
