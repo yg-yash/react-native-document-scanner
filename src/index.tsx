@@ -90,9 +90,16 @@ class PdfScanner extends React.Component<PdfScannerProps> {
     }
   }
 
+  capture () {
+    let native: any = this.ref.current
+    if (native) { native.capture() }
+  }
+
+  ref = React.createRef();
   render () {
     return (
       <RNPdfScanner
+        ref={this.ref}
         {...this.props}
         onPictureTaken={this.sendOnPictureTakenEvent.bind(this)}
         onRectangleDetect={this.sendOnRectangleDetectEvent.bind(this)}

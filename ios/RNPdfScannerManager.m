@@ -31,6 +31,18 @@ RCT_EXPORT_VIEW_PROPERTY(quality, float)
 RCT_EXPORT_VIEW_PROPERTY(brightness, float)
 RCT_EXPORT_VIEW_PROPERTY(contrast, float)
 
+RCT_EXPORT_METHOD(capture:(nonnull NSNumber *)reactTag)
+{
+    [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, DocumentScannerView *> *viewRegistry) {
+        DocumentScannerView *view = viewRegistry[reactTag];
+        if (![view isKindOfClass:[DocumentScannerView class]]) {
+            RCTLogError(@"Invalid view returned from registry, expecting DocumentScannerView, got: %@", view);
+        } else {
+            [view capture];
+        }
+    }];
+}
+
 - (UIView*) view {
     return [DocumentScannerView new];
 }
