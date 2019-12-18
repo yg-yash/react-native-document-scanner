@@ -1,12 +1,14 @@
 import React from 'react'
 import {
   DeviceEventEmitter,
+  findNodeHandle,
+  NativeModules,
   Platform,
   requireNativeComponent,
-  ViewStyle
-} from 'react-native'
+  ViewStyle } from 'react-native'
 
 const RNPdfScanner = requireNativeComponent('RNPdfScanner')
+const ScannerManager: any = NativeModules.RNPdfScannerManager
 
 export interface PictureTaken {
   rectangleCoordinates?: object;
@@ -91,15 +93,27 @@ class PdfScanner extends React.Component<PdfScannerProps> {
   }
 
   capture () {
-    let native: any = this.ref.current
-    if (native) { native.capture() }
+    if (this._scannerHandle) {
+      ScannerManager.capture(this._scannerHandle)
+    }
   }
 
-  ref = React.createRef();
+  _scannerRef: any = null;
+  _scannerHandle: number | null = null;
+  _setReference = (ref: any) => {
+    if (ref) {
+      this._scannerRef = ref
+      this._scannerHandle = findNodeHandle(ref)
+    } else {
+      this._scannerRef = null
+      this._scannerHandle = null
+    }
+  };
+
   render () {
     return (
       <RNPdfScanner
-        ref={this.ref}
+        ref={this._setReference}
         {...this.props}
         onPictureTaken={this.sendOnPictureTakenEvent.bind(this)}
         onRectangleDetect={this.sendOnRectangleDetectEvent.bind(this)}
