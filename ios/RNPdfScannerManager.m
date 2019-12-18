@@ -2,6 +2,10 @@
 #import "RNPdfScannerManager.h"
 #import "DocumentScannerView.h"
 
+#import <React/RCTBridge.h>
+#import <React/RCTUIManager.h>
+#import <React/RCTLog.h>
+
 @interface RNPdfScannerManager()
 @end
 
