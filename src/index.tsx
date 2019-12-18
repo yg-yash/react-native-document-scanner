@@ -1,14 +1,12 @@
 import React from 'react'
 import {
   DeviceEventEmitter,
-  NativeModules,
   Platform,
   requireNativeComponent,
   ViewStyle
 } from 'react-native'
 
 const RNPdfScanner = requireNativeComponent('RNPdfScanner')
-const CameraManager = NativeModules.RNPdfScannerManager || {}
 
 export interface PictureTaken {
   rectangleCoordinates?: object;
