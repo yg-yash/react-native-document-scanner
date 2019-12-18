@@ -92,10 +92,6 @@ class PdfScanner extends React.Component<PdfScannerProps> {
     }
   }
 
-  capture () {
-    CameraManager.capture()
-  }
-
   render () {
     return (
       <RNPdfScanner
@@ -108,6 +104,7 @@ class PdfScanner extends React.Component<PdfScannerProps> {
         contrast={this.props.contrast || 1}
         quality={this.getImageQuality()}
         detectionCountBeforeCapture={this.props.detectionCountBeforeCapture || 5}
+        durationBetweenCaptures={this.props.durationBetweenCaptures || 0}
         detectionRefreshRateInMS={this.props.detectionRefreshRateInMS || 50}
       />
     )
