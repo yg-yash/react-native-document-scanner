@@ -13,10 +13,6 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by Andre on 29/11/2017.
- */
-
 public class DocumentScannerViewManager extends ViewGroupManager<MainView> {
 
     private static final String REACT_CLASS = "RNPdfScanner";
@@ -29,11 +25,7 @@ public class DocumentScannerViewManager extends ViewGroupManager<MainView> {
 
     @Override
     protected MainView createViewInstance(final ThemedReactContext reactContext) {
-        // OpenNoteCameraView view = new OpenNoteCameraView(reactContext, -1,
-        // reactContext.getCurrentActivity());
-        MainView.createInstance(reactContext, (Activity) reactContext.getBaseContext());
-
-        view = MainView.getInstance();
+        view = new MainView(reactContext, (Activity) reactContext.getBaseContext());
         view.setOnProcessingListener(new OpenNoteCameraView.OnProcessingListener() {
             @Override
             public void onProcessingChange(WritableMap data) {

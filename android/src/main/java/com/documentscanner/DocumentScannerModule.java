@@ -4,10 +4,9 @@ import com.documentscanner.views.MainView;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-
-/**
- * Created by andre on 28/11/2017.
- */
+import com.facebook.react.uimanager.NativeViewHierarchyManager;
+import com.facebook.react.uimanager.UIBlock;
+import com.facebook.react.uimanager.UIManagerModule;
 
 public class DocumentScannerModule extends ReactContextBaseJavaModule{
 
