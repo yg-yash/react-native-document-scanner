@@ -29,12 +29,13 @@
 
     if (self.stableCounter > self.detectionCountBeforeCapture &&
         [NSDate timeIntervalSinceReferenceDate] > self.lastCaptureTime + self.durationBetweenCaptures) {
+        self.lastCaptureTime = [NSDate timeIntervalSinceReferenceDate];
+        self.stableCounter = 0;
         [self capture];
     }
 }
 
 - (void) capture {
-    self.lastCaptureTime = [NSDate timeIntervalSinceReferenceDate];
     [self captureImageWithCompletionHander:^(UIImage *croppedImage, UIImage *initialImage, CIRectangleFeature *rectangleFeature) {
       if (self.onPictureTaken) {
             NSData *croppedImageData = UIImageJPEGRepresentation(croppedImage, self.quality);

@@ -104,9 +104,9 @@ public class ImageProcessor extends Handler {
             double now = (double)(new Date()).getTime() / 1000.0;
             if (numOfSquares == numOfRectangles && now < lastCaptureTime + durationBetweenCaptures) {
                 lastCaptureTime = now;
+                numOfSquares = 0;
                 mMainActivity.requestPicture();
                 mMainActivity.waitSpinnerVisible();
-                numOfSquares = 0;
             }
         } else {
             numOfSquares = 0;
