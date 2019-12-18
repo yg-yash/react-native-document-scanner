@@ -47,6 +47,7 @@ interface PdfScannerProps {
   brightness?: number;
   contrast?: number;
   detectionCountBeforeCapture?: number;
+  durationBetweenCaptures?: number;
   detectionRefreshRateInMS?: number;
   documentAnimation?: boolean;
   noGrayScale?: boolean;

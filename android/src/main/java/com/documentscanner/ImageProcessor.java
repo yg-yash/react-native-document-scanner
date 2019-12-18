@@ -48,6 +48,8 @@ public class ImageProcessor extends Handler {
     private Point[] mPreviewPoints;
     private int numOfSquares = 0;
     private int numOfRectangles = 10;
+    private double lastCaptureTime = 0;
+    private double durationBetweenCaptures = 0;
 
     public ImageProcessor(Looper looper, OpenNoteCameraView mainActivity, Context context) {
         super(looper);
@@ -58,6 +60,10 @@ public class ImageProcessor extends Handler {
 
     public void setNumOfRectangles(int numOfRectangles) {
         this.numOfRectangles = numOfRectangles;
+    }
+
+    public void setDurationBetweenCaptures(double durationBetweenCaptures) {
+        this.durationBetweenCaptures = durationBetweenCaptures;
     }
 
     public void setBrightness(double brightness) {
@@ -95,7 +101,9 @@ public class ImageProcessor extends Handler {
 
         if (detectPreviewDocument(frame) && focused) {
             numOfSquares++;
-            if (numOfSquares == numOfRectangles) {
+            double now = (double)(new Date()).getTime() / 1000.0;
+            if (numOfSquares == numOfRectangles && now < lastCaptureTime + durationBetweenCaptures) {
+                lastCaptureTime = now;
                 mMainActivity.requestPicture();
                 mMainActivity.waitSpinnerVisible();
                 numOfSquares = 0;

@@ -72,6 +72,7 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
     private PictureCallback pCallback;
 
     private int numberOfRectangles = 15;
+    private double durationBetweenCaptures = 0.0;
     private Boolean enableTorch = false;
     private String overlayColor = null;
     private Boolean saveOnDevice = false;
@@ -134,6 +135,10 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
 
     public void setDetectionCountBeforeCapture(int numberOfRectangles) {
         this.numberOfRectangles = numberOfRectangles;
+    }
+
+    public void setDurationBetweenCaptures(double durationBetweenCaptures) {
+        this.durationBetweenCaptures = durationBetweenCaptures;
     }
 
     public void setEnableTorch(boolean enableTorch) {
@@ -379,6 +384,7 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
         if (mImageProcessor != null) {
             mImageProcessor.setBugRotate(mBugRotate);
             mImageProcessor.setNumOfRectangles(numberOfRectangles);
+            mImageProcessor.setDurationBetweenCaptures(durationBetweenCaptures);
         }
 
         try {

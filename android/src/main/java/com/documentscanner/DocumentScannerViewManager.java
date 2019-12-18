@@ -75,6 +75,11 @@ public class DocumentScannerViewManager extends ViewGroupManager<MainView> {
         view.setDetectionCountBeforeCapture(numberOfRectangles);
     }
 
+    @ReactProp(name = "durationBetweenCaptures", defaultDouble = 0)
+    public void setDurationBetweenCaptures(MainView view, double durationBetweenCaptures) {
+        view.setDurationBetweenCaptures(durationBetweenCaptures);
+    }
+
     @ReactProp(name = "enableTorch", defaultBoolean = false)
     public void setEnableTorch(MainView view, Boolean enable) {
         view.setEnableTorch(enable);

@@ -46,6 +46,10 @@ public class MainView extends FrameLayout {
         view.setDetectionCountBeforeCapture(numberOfRectangles);
     }
 
+    public void setDurationBetweenCaptures(double durationBetweenCaptures) {
+        view.setDurationBetweenCaptures(durationBetweenCaptures);
+    }
+
     public void setEnableTorch(boolean enable) {
         view.setEnableTorch(enable);
     }
