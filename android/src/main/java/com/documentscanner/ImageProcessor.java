@@ -102,7 +102,7 @@ public class ImageProcessor extends Handler {
         if (detectPreviewDocument(frame) && focused) {
             numOfSquares++;
             double now = (double)(new Date()).getTime() / 1000.0;
-            if (numOfSquares == numOfRectangles && now < lastCaptureTime + durationBetweenCaptures) {
+            if (numOfSquares == numOfRectangles && now > lastCaptureTime + durationBetweenCaptures) {
                 lastCaptureTime = now;
                 numOfSquares = 0;
                 mMainActivity.requestPicture();
