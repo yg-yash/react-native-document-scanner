@@ -13,14 +13,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.documentscanner.views.OpenNoteCameraView;
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.NotFoundException;
-import com.google.zxing.RGBLuminanceSource;
-import com.google.zxing.Result;
-import com.google.zxing.ResultPoint;
-import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.multi.qrcode.QRCodeMultiReader;
 import com.documentscanner.helpers.OpenNoteMessage;
 import com.documentscanner.helpers.PreviewFrame;
 import com.documentscanner.helpers.Quadrilateral;
@@ -56,6 +48,8 @@ public class ImageProcessor extends Handler {
     private Point[] mPreviewPoints;
     private int numOfSquares = 0;
     private int numOfRectangles = 10;
+    private double lastCaptureTime = 0;
+    private double durationBetweenCaptures = 0;
 
     public ImageProcessor(Looper looper, OpenNoteCameraView mainActivity, Context context) {
         super(looper);
@@ -66,6 +60,10 @@ public class ImageProcessor extends Handler {
 
     public void setNumOfRectangles(int numOfRectangles) {
         this.numOfRectangles = numOfRectangles;
+    }
+
+    public void setDurationBetweenCaptures(double durationBetweenCaptures) {
+        this.durationBetweenCaptures = durationBetweenCaptures;
     }
 
     public void setBrightness(double brightness) {
@@ -99,27 +97,16 @@ public class ImageProcessor extends Handler {
 
         Mat frame = previewFrame.getFrame();
 
-        Result[] results = zxing(frame);
-
-        for (Result result : results) {
-            String qrText = result.getText();
-            if (Utils.isMatch(qrText, "^P.. V.. S[0-9]+") && checkQR(qrText)) {
-                Log.d(TAG, "QR Code valid: " + result.getText());
-                ResultPoint[] qrResultPoints = result.getResultPoints();
-                break;
-            } else {
-                Log.d(TAG, "QR Code ignored: " + result.getText());
-            }
-        }
-
         boolean focused = mMainActivity.isFocused();
 
         if (detectPreviewDocument(frame) && focused) {
             numOfSquares++;
-            if (numOfSquares == numOfRectangles) {
+            double now = (double)(new Date()).getTime() / 1000.0;
+            if (numOfSquares == numOfRectangles && now < lastCaptureTime + durationBetweenCaptures) {
+                lastCaptureTime = now;
+                numOfSquares = 0;
                 mMainActivity.requestPicture();
                 mMainActivity.waitSpinnerVisible();
-                numOfSquares = 0;
             }
         } else {
             numOfSquares = 0;
@@ -445,42 +432,6 @@ public class ImageProcessor extends Handler {
         cannedImage.release();
 
         return contours;
-    }
-
-    private final QRCodeMultiReader qrCodeMultiReader = new QRCodeMultiReader();
-
-    private Result[] zxing(Mat inputImage) {
-
-        int w = inputImage.width();
-        int h = inputImage.height();
-
-        Mat southEast;
-
-        if (mBugRotate) {
-            southEast = inputImage.submat(h - h / 4, h, 0, w / 2 - h / 4);
-        } else {
-            southEast = inputImage.submat(0, h / 4, w / 2 + h / 4, w);
-        }
-
-        Bitmap bMap = Bitmap.createBitmap(southEast.width(), southEast.height(), Bitmap.Config.ARGB_8888);
-        org.opencv.android.Utils.matToBitmap(southEast, bMap);
-        southEast.release();
-        int[] intArray = new int[bMap.getWidth() * bMap.getHeight()];
-        // copy pixel data from the Bitmap into the 'intArray' array
-        bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
-
-        LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(), bMap.getHeight(), intArray);
-
-        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-
-        Result[] results = {};
-        try {
-            results = qrCodeMultiReader.decodeMultiple(bitmap);
-        } catch (NotFoundException ignored) {
-        }
-
-        return results;
-
     }
 
     public void setBugRotate(boolean bugRotate) {

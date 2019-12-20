@@ -1,14 +1,14 @@
 import React from 'react'
 import {
   DeviceEventEmitter,
+  findNodeHandle,
   NativeModules,
   Platform,
   requireNativeComponent,
-  ViewStyle
-} from 'react-native'
+  ViewStyle } from 'react-native'
 
 const RNPdfScanner = requireNativeComponent('RNPdfScanner')
-const CameraManager = NativeModules.RNPdfScannerManager || {}
+const ScannerManager: any = NativeModules.RNPdfScannerManager
 
 export interface PictureTaken {
   rectangleCoordinates?: object;
@@ -47,11 +47,15 @@ interface PdfScannerProps {
   brightness?: number;
   contrast?: number;
   detectionCountBeforeCapture?: number;
+  durationBetweenCaptures?: number;
   detectionRefreshRateInMS?: number;
   documentAnimation?: boolean;
   noGrayScale?: boolean;
   manualOnly?: boolean;
   style?: ViewStyle;
+  useBase64?: boolean;
+  saveInAppDocument?: boolean;
+  captureMultiple?: boolean;
 }
 
 class PdfScanner extends React.Component<PdfScannerProps> {
@@ -72,7 +76,7 @@ class PdfScanner extends React.Component<PdfScannerProps> {
     return this.props.quality
   }
 
-  componentWillMount () {
+  componentDidMount () {
     if (Platform.OS === 'android') {
       const { onPictureTaken, onProcessing } = this.props
       if (onPictureTaken) DeviceEventEmitter.addListener('onPictureTaken', onPictureTaken)
@@ -89,12 +93,27 @@ class PdfScanner extends React.Component<PdfScannerProps> {
   }
 
   capture () {
-    CameraManager.capture()
+    if (this._scannerHandle) {
+      ScannerManager.capture(this._scannerHandle)
+    }
   }
+
+  _scannerRef: any = null;
+  _scannerHandle: number | null = null;
+  _setReference = (ref: any) => {
+    if (ref) {
+      this._scannerRef = ref
+      this._scannerHandle = findNodeHandle(ref)
+    } else {
+      this._scannerRef = null
+      this._scannerHandle = null
+    }
+  };
 
   render () {
     return (
       <RNPdfScanner
+        ref={this._setReference}
         {...this.props}
         onPictureTaken={this.sendOnPictureTakenEvent.bind(this)}
         onRectangleDetect={this.sendOnRectangleDetectEvent.bind(this)}
@@ -104,6 +123,7 @@ class PdfScanner extends React.Component<PdfScannerProps> {
         contrast={this.props.contrast || 1}
         quality={this.getImageQuality()}
         detectionCountBeforeCapture={this.props.detectionCountBeforeCapture || 5}
+        durationBetweenCaptures={this.props.durationBetweenCaptures || 0}
         detectionRefreshRateInMS={this.props.detectionRefreshRateInMS || 50}
       />
     )
