@@ -172,3 +172,4 @@ If you want to use saveInAppDocument options, then don't forget to add those raw
 ## Set up dev environment
 
 [Medium article](https://medium.com/@charpeni/setting-up-an-example-app-for-your-react-native-library-d940c5cf31e4)
+
