@@ -80,7 +80,7 @@ function YourComponent(props) {
     <View>
       <DocumentScanner
         style={styles.scanner}
-        onPictureTaken={handleOnPictureTaken}
+        onDocumentTaken={handleonDocumentTaken}
         overlayColor="rgba(255,130,0, 0.7)"
         enableTorch={false}
         quality={0.5}
@@ -156,7 +156,7 @@ Enum (0, 1 or 2) corresponding to the type of rectangle found
 
 | Prop           | Params |   Type   | Description                                                                                                                                                                         |
 | :------------- | :----: | :------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| onPictureTaken | `data` | `object` | Returns the captured image in an object `{ croppedImage: ('URI or BASE64 string'), initialImage: 'URI or BASE64 string', rectangleCoordinates[only iOS]: 'object of coordinates' }` |
+| onDocumentTaken | `data` | `object` | Returns the captured image in an object `{ croppedImage: ('URI or BASE64 string'), initialImage: 'URI or BASE64 string', rectangleCoordinates[only iOS]: 'object of coordinates' }` |
 
 ## Save in app document _-Non tested-_
 

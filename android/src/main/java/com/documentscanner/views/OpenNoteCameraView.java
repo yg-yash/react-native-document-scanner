@@ -86,7 +86,7 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
     private OnProcessingListener processingListener = null;
 
     public interface OnScannerListener {
-        void onPictureTaken(WritableMap path);
+        void onDocumentTaken(WritableMap path);
     }
 
     public interface OnProcessingListener {
@@ -613,7 +613,7 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
             data.putString("initialImage", "file://" + initialFileName);
             // data.putMap("rectangleCoordinates", scannedDocument.previewPointsAsHash());
 
-            this.listener.onPictureTaken(data);
+            this.listener.onDocumentTaken(data);
         }
 
 
@@ -647,7 +647,7 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
     }
 
     @Override
-    public void onPictureTaken(byte[] data, Camera camera) {
+    public void onDocumentTaken(byte[] data, Camera camera) {
 
         Camera.Size pictureSize = camera.getParameters().getPictureSize();
 

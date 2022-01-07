@@ -3,7 +3,7 @@
 
 @interface DocumentScannerView : IPDFCameraViewController <IPDFCameraViewControllerDelegate>
 
-@property (nonatomic, copy) RCTBubblingEventBlock onPictureTaken;
+@property (nonatomic, copy) RCTBubblingEventBlock onDocumentTaken;
 @property (nonatomic, copy) RCTBubblingEventBlock onRectangleDetect;
 @property (nonatomic, assign) NSInteger detectionCountBeforeCapture;
 @property (nonatomic, assign) NSInteger stableCounter;

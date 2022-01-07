@@ -44,7 +44,7 @@ export default function App() {
       <PDFScanner
         ref={pdfScannerElement}
         style={styles.scanner}
-        onPictureTaken={setData}
+        onDocumentTaken={setData}
         overlayColor="rgba(255,130,0, 0.7)"
         enableTorch={false}
         quality={0.5}
