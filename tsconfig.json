@@ -20,9 +20,10 @@
     "noUnusedParameters": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "target": "esnext",
-    "declaration": true
+    "declaration": false,
+    "checkJs": false
   },
   "exclude": ["lib/**/*", "node_modules"]
 }
